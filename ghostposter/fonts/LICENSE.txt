@@ -1,0 +1,9 @@
+DejaVu Fonts License
+
+Fonts are (c) Bitstream (see below). DejaVu changes are in public domain.
+Full license text: https://dejavu-fonts.github.io/License.html
+
+Bundled here so GhostPoster can correctly render Polish diacritics
+(ą ć ę ł ń ó ś ź ż) in generated PDFs regardless of which fonts are
+installed on the end user's system — PyMuPDF's built-in base14 fonts
+(Helvetica etc.) do not support these characters.

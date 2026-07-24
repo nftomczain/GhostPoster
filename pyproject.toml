@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ghostposter"
+version = "1.0.0-Beta"
+description = "Split large PDF plans across smaller paper sizes (A4/A3/A2...) for printing posters on regular printers."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "nftomczain" }]
+requires-python = ">=3.9"
+dependencies = [
+    "PyMuPDF>=1.24",
+    "pypdf>=4.0",
+    "reportlab>=4.0",
+    "click>=8.1",
+    "rich>=13.0",
+    "Pillow>=10.0",
+]
+
+[project.optional-dependencies]
+gui = ["PySide6>=6.5"]
+dev = ["ruff>=0.5", "black>=24.0", "pytest>=8.0", "build>=1.2"]
+
+[project.scripts]
+ghostposter = "ghostposter.cli:main"
+ghostposter-gui = "ghostposter.gui:main"
+
+[project.urls]
+Homepage = "https://github.com/nftomczain/GhostPoster"
+
+[tool.setuptools.packages.find]
+include = ["ghostposter*"]
+
+[tool.setuptools.package-data]
+ghostposter = ["fonts/*.ttf", "fonts/LICENSE.txt"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]  # dlugosc linii pilnuje black

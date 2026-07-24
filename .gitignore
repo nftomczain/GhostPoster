@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Build
+build/
+dist/
+*.egg-info/
+*.whl
+
+# Test / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Lint
+.ruff_cache/
+.mypy_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary
+*.tmp
+*.bak
+
+# PDFs
+*.pdf
+!examples/*.pdf
