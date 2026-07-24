@@ -11,7 +11,7 @@ Split large PDF drawings into printable A-series, Letter, ANSI and ARCH pages wh
 
 <p align="center">
   <a href="https://github.com/nftomczain/GhostPoster/releases">
-    <img alt="GitHub Release" src="https://img.shields.io/github/v/release/nftomczain/GhostPoster">
+    <img alt="GitHub Release" src="https://img.shields.io/github/v/release/nftomczain/GhostPoster?include_prereleases&cacheSeconds=300">
   </a>
 
   <a href="https://github.com/nftomczain/GhostPoster/actions">
