@@ -176,39 +176,55 @@ The project is continuously tested using GitHub Actions on all supported platfor
 
 ## Requirements
 
-- Python **3.10** or newer
+- Python **3.10** or newer (source installation)
 - Linux, Windows or macOS
 
 GhostPoster works completely offline and does not require any external services.
 
 ---
 
-## Clone the repository
+## Linux (AppImage)
+
+Download the latest **GhostPoster-x86_64.AppImage** from the
+[Releases](https://github.com/nftomczain/GhostPoster/releases) page.
+
+Make it executable and run:
+
+```bash
+chmod +x GhostPoster-x86_64.AppImage
+./GhostPoster-x86_64.AppImage
+```
+
+Optional integrity check:
+
+```bash
+sha256sum -c GhostPoster-x86_64.AppImage.sha256
+```
+
+---
+
+## Build from source
+
+### Clone the repository
 
 ```bash
 git clone https://github.com/nftomczain/GhostPoster.git
 cd GhostPoster
 ```
 
----
-
-## Install CLI
+### Install CLI
 
 ```bash
 pip install -e .
 ```
 
----
-
-## Install GUI
+### Install GUI
 
 ```bash
 pip install -e ".[gui]"
 ```
 
----
-
-## Run
+### Run
 
 CLI
 
@@ -226,6 +242,7 @@ or
 
 ```bash
 python -m ghostposter.gui
+```
 ```
 
 ---
