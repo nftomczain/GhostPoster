@@ -22,7 +22,7 @@ Split large PDF drawings into printable A-series, Letter, ANSI and ARCH pages wh
 
   <img alt="License" src="https://img.shields.io/badge/License-MIT-green">
 
-  <img alt="Platform" src="https://img.shields.io/badge/Linux-Windows%20%7C%20macOS-lightgrey">
+  <img alt="Platform" src="https://img.shields.io/badge/Platform-Linux-green">
 </p>
 
 
