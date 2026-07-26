@@ -165,8 +165,6 @@ This minimizes printing mistakes.
 GhostPoster runs on
 
 - Linux
-- Windows
-- macOS
 
 The project is continuously tested using GitHub Actions on all supported platforms.
 
