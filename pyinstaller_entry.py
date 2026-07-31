@@ -8,11 +8,13 @@ bezpośrednio jako punkt wejścia. Ten plik jest cienką nakładką importując�
 względne w środku działają tak samo jak przy `ghostposter-gui`.
 """
 import os
-import sys
-import fitz
 import platform
-from pathlib import Path
+import sys
 from datetime import datetime
+from pathlib import Path
+
+import fitz
+
 from ghostposter import __version__
 
 if os.getenv("GHOSTPOSTER_DEBUG") == "1":

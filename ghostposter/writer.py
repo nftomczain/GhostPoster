@@ -16,7 +16,7 @@ from pathlib import Path
 import fitz  # PyMuPDF
 
 from . import __version__, marks
-from .debug import pdf_info, export_info
+from .debug import export_info, pdf_info
 from .geometry import Tile
 
 ProgressCallback = Callable[[int, int], None]
