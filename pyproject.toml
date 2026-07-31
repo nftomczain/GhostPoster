@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ghostposter"
-version = "1.0.1-Beta"
+version = "1.0.1-Beta-RC1"
 description = "Split large PDF plans across smaller paper sizes (A4/A3/A2...) for printing posters on regular printers."
 readme = "README.md"
 license = { text = "MIT" }

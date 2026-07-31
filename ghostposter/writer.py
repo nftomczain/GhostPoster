@@ -16,6 +16,7 @@ from pathlib import Path
 import fitz  # PyMuPDF
 
 from . import __version__, marks
+from .debug import pdf_info, export_info
 from .geometry import Tile
 
 ProgressCallback = Callable[[int, int], None]
@@ -71,6 +72,9 @@ def write_tiled_pdf(
     actually_skipped: list[str] = []
 
     with fitz.open(input_path) as src, fitz.open() as out:
+        pdf_info(input_path, src)
+        export_info(input_path, output_path, tiles)
+
         if print_shop:
             info_page = out.new_page(width=paper_width_pt, height=paper_height_pt)
             marks.draw_print_shop_info_page(info_page, print_shop_info or {})
@@ -80,10 +84,19 @@ def write_tiled_pdf(
                 actually_skipped.append(tile.label)
             else:
                 new_page = out.new_page(width=paper_width_pt, height=paper_height_pt)
+
                 clip_rect = fitz.Rect(tile.x0, tile.y0, tile.x1, tile.y1)
                 target_rect = fitz.Rect(0, 0, tile.width, tile.height)
-                new_page.show_pdf_page(target_rect, src, page_number, clip=clip_rect)
 
+                page = src[page_number]
+
+                pix = page.get_pixmap(
+                    clip=clip_rect,
+                    matrix=fitz.Matrix(1, 1),
+                )
+
+                new_page.insert_image(target_rect, pixmap=pix)
+                
                 if draw_marks:
                     marks.draw_registration_crosses(new_page, tile, tiles)
                 if draw_cutlines:

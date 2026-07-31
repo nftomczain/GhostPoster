@@ -41,3 +41,17 @@ Thumbs.db
 # PDFs
 *.pdf
 !examples/*.pdf
+
+*.egg-info/
+
+# AppImage build output
+AppDir/
+
+*.AppImage
+
+*.sha256
+ghostposter_debug.txt
+saved.json
+unpacked.json
+
+
