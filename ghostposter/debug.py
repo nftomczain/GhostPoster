@@ -64,6 +64,7 @@ def pdf_info(path, doc):
     debug(f"RotationMat : {page.rotation_matrix}")
     debug("")
 
+
 def export_info(input_path, output_path, tiles):
     if not _LOG:
         return

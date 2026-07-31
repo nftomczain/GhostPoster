@@ -7,6 +7,7 @@ bezpośrednio jako punkt wejścia. Ten plik jest cienką nakładką importując�
 `ghostposter` jako normalny, zainstalowany pakiet, dzięki czemu importy
 względne w środku działają tak samo jak przy `ghostposter-gui`.
 """
+
 import os
 import platform
 import sys
@@ -37,7 +38,7 @@ if os.getenv("GHOSTPOSTER_DEBUG") == "1":
         f.write("=" * 60 + "\n")
         f.write(f"Timestamp : {datetime.now().isoformat()}\n")
         f.write("Status    : startup OK\n")
-        
+
 from ghostposter.gui import main
 
 if __name__ == "__main__":

@@ -96,7 +96,7 @@ def write_tiled_pdf(
                 )
 
                 new_page.insert_image(target_rect, pixmap=pix)
-                
+
                 if draw_marks:
                     marks.draw_registration_crosses(new_page, tile, tiles)
                 if draw_cutlines:
