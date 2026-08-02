@@ -102,6 +102,23 @@ console = Console()
     show_default=True,
     help="Margines (mm) zostawiony wokół wykrytej treści przy --auto-crop — przydatne, gdy cienka linia dochodzi do samej krawędzi.",
 )
+@click.option(
+    "--blank-threshold",
+    "blank_threshold_pct",
+    type=click.FloatRange(0, 100),
+    default=0.5,
+    show_default=True,
+    help="Próg wykrywania pustych arkuszy w % atramentu — podnieś, jeśli cienka linia ramki "
+    "arkusza sprawia, że prawie puste kafelki nie są rozpoznawane jako puste.",
+)
+@click.option(
+    "--crop-rect",
+    "crop_rect_mm",
+    default=None,
+    help="Ręcznie zdefiniowany obszar treści w mm, 'x0,y0,x1,y1' od lewego górnego rogu strony "
+    "— pomija automatyczne wykrywanie (--auto-crop, --crop-margin) i używa dokładnie tego "
+    "prostokąta. Przydatne, gdy Auto Crop źle sobie radzi z nietypowym PDF-em.",
+)
 def main(
     input_pdf: Path,
     paper: str,
@@ -117,6 +134,8 @@ def main(
     keep_blank: bool,
     auto_crop: bool,
     crop_margin_mm: str,
+    blank_threshold_pct: float,
+    crop_rect_mm: str | None,
 ) -> None:
     """Dzieli duży PDF (INPUT_PDF) na mniejsze arkusze gotowe do druku i sklejenia."""
     if output_path is None:
@@ -137,6 +156,7 @@ def main(
         keep_blank=keep_blank,
         auto_crop=auto_crop,
         crop_margin_mm=float(crop_margin_mm),
+        blank_threshold_pct=blank_threshold_pct,
     )
 
     try:
@@ -153,7 +173,27 @@ def main(
 
     effective_width_pt, effective_height_pt = page_width_pt, page_height_pt
     offset_x, offset_y = 0.0, 0.0
-    if config.auto_crop:
+    if crop_rect_mm is not None:
+        try:
+            parts = [float(v.strip()) for v in crop_rect_mm.split(",")]
+            if len(parts) != 4:
+                raise ValueError
+            rx0, ry0, rx1, ry1 = (mm_to_pt(v) for v in parts)
+        except ValueError as exc:
+            raise click.ClickException(
+                "--crop-rect musi mieć postać 'x0,y0,x1,y1' w mm, np. '20,15,780,540'."
+            ) from exc
+        rx0, rx1 = sorted((max(rx0, 0.0), min(rx1, page_width_pt)))
+        ry0, ry1 = sorted((max(ry0, 0.0), min(ry1, page_height_pt)))
+        if rx1 - rx0 < 1 or ry1 - ry0 < 1:
+            raise click.ClickException("--crop-rect definiuje zbyt mały albo pusty obszar.")
+        effective_width_pt, effective_height_pt = rx1 - rx0, ry1 - ry0
+        offset_x, offset_y = rx0, ry0
+        console.print(
+            f"--crop-rect: ręczny obszar {pt_to_mm(effective_width_pt):.0f}x"
+            f"{pt_to_mm(effective_height_pt):.0f} mm (auto-detekcja pominięta)."
+        )
+    elif config.auto_crop:
         bbox = detect_content_bbox(
             config.input_path, config.page_number, padding_mm=config.crop_margin_mm
         )
@@ -192,7 +232,12 @@ def main(
 
     skip_labels: set[str] = set()
     if not config.keep_blank:
-        blanks = find_blank_tiles(config.input_path, tiles, config.page_number)
+        blanks = find_blank_tiles(
+            config.input_path,
+            tiles,
+            config.page_number,
+            ink_threshold=config.blank_threshold_pct / 100,
+        )
         if blanks:
             blank_labels = [t.label for t in blanks]
             if config.skip_blank:

@@ -1,3 +1,28 @@
+"""Tryb debug: aktywowany zmienną środowiskową `GHOSTPOSTER_DEBUG=1`.
+
+Zapisuje diagnostykę do `ghostposter_debug.txt` w bieżącym katalogu —
+wersję GhostPoster, Pythona (łącznie ze ścieżką do interpretera), wersję
+PyMuPDF/MuPDF, czy program działa jako spakowana binarka PyInstallera
+(`Frozen`/`MEIPASS` — przydatne przy diagnozowaniu problemów specyficznych
+dla AppImage/.exe, których nie da się odtworzyć z normalnej instalacji
+przez pip), informacje o platformie, geometrię wczytywanego PDF-a
+(rotacja, mediabox, cropbox, macierze transformacji) i przebieg eksportu.
+Przydatne przy zgłaszaniu błędów, żeby nie trzeba było tego wszystkiego
+opisywać ręcznie.
+
+Użycie:
+
+    GHOSTPOSTER_DEBUG=1 ghostposter-gui
+    GHOSTPOSTER_DEBUG=1 ./GhostPoster-x86_64.AppImage
+
+Plik jest otwierany raz, przy pierwszym imporcie tego modułu (czyli przy
+starcie programu) — każde uruchomienie dostaje świeży log, nie dopisuje
+do poprzedniego. Gdy zmienna środowiskowa nie jest ustawiona, wszystkie
+funkcje w tym module są no-op — zero kosztu w normalnym użytkowaniu.
+"""
+
+from __future__ import annotations
+
 import os
 import platform
 import sys
@@ -6,10 +31,7 @@ from pathlib import Path
 
 import fitz
 
-try:
-    from ghostposter import __version__
-except Exception:
-    __version__ = "unknown"
+from . import __version__
 
 DEBUG = os.getenv("GHOSTPOSTER_DEBUG") == "1"
 
@@ -27,8 +49,8 @@ if DEBUG:
     _LOG.write(f"fitz      : {fitz.__file__}\n")
     _LOG.write(f"PyMuPDF   : {fitz.VersionBind}\n")
     _LOG.write(f"MuPDF     : {fitz.VersionFitz}\n")
-    _LOG.write(f"Frozen    : {getattr(sys,'frozen',False)}\n")
-    _LOG.write(f"MEIPASS   : {getattr(sys,'_MEIPASS',None)}\n")
+    _LOG.write(f"Frozen    : {getattr(sys, 'frozen', False)}\n")
+    _LOG.write(f"MEIPASS   : {getattr(sys, '_MEIPASS', None)}\n")
     _LOG.write(f"Platform  : {platform.platform()}\n")
     _LOG.write(f"Machine   : {platform.machine()}\n")
     _LOG.write(f"Timestamp : {datetime.now().isoformat()}\n")
@@ -37,22 +59,29 @@ if DEBUG:
     _LOG.flush()
 
 
-def debug(msg=""):
+def debug(msg: object = "") -> None:
     if _LOG:
         _LOG.write(str(msg) + "\n")
         _LOG.flush()
 
 
-def pdf_info(path, doc):
+def pdf_info(path: Path, doc: fitz.Document, page_number: int = 0) -> None:
+    """Loguje geometrię wybranej strony `doc` (domyślnie strony 0).
+
+    `page_number` odpowiada temu, którą stronę faktycznie dzieli GhostPoster
+    (patrz `write_tiled_pdf`) — dla wielostronicowych PDF-ów samo zalogowanie
+    strony 0 byłoby mylące, gdyby użytkownik dzielił np. stronę 2.
+    """
     if not _LOG:
         return
 
-    page = doc[0]
+    page = doc[page_number]
 
     debug("INPUT PDF")
     debug("-" * 60)
     debug(f"File      : {path}")
     debug(f"Pages     : {doc.page_count}")
+    debug(f"Page used : {page_number}")
     debug(f"Rotation  : {page.rotation}")
     debug(f"MediaBox  : {page.mediabox}")
     debug(f"CropBox   : {page.cropbox}")
@@ -65,7 +94,7 @@ def pdf_info(path, doc):
     debug("")
 
 
-def export_info(input_path, output_path, tiles):
+def export_info(input_path: Path, output_path: Path, tiles: list) -> None:
     if not _LOG:
         return
 

@@ -1,261 +1,237 @@
-# GhostPoster
+<p align="center">
+  <a href="README.pl.md">Polski</a> · <b>English</b>
+</p>
 
 <p align="center">
-  <img src="docs/logo.png" width="320">
+  <img src="docs/logo.png" alt="GhostPoster logo" width="180">
 </p>
 
 <h1 align="center">GhostPoster</h1>
+<p align="center"><b>Professional PDF Tiling & Poster Generator</b></p>
+<p align="center">
+  Split large PDF plans into smaller sheets (A4, A3, A2…) and print them on
+  a regular printer at 1:1 scale, with a shared overlap tab for gluing.
+</p>
+<h2 align="center">PDF in. Plan out.</h2>
+
 
 <p align="center">
-<b>Open-Source PDF Tiling & Poster Printing Tool</b><br>
-Split large PDF drawings into printable A-series, Letter, ANSI and ARCH pages while preserving an exact 100% scale.
+  <a href="https://github.com/nftomczain/GhostPoster/actions"><img alt="CI" src="https://img.shields.io/badge/CI-GitHub%20Actions-blue"></a>
+  <img alt="license" src="https://img.shields.io/badge/license-MIT-green">
+  <img alt="version" src="https://img.shields.io/github/v/release/nftomczain/GhostPoster?display_name=tag">
+ <img alt="Platform" src="https://img.shields.io/badge/Platform-Linux AppImage-green">
 </p>
 
-------------------------------------------------------------------------
+---
 
-# Why GhostPoster?
+## Screenshots
 
-Most poster printing tools simply split pages.
+| Program window (GUI) | Generated PDF |
+|---|---|
+| ![GUI](docs/screenshots/gui_window.png) | ![Generated PDF](docs/screenshots/generated_pdf.png) |
 
-**GhostPoster** is designed for technical drawings where **100% scale
-matters**.
+Left: live preview with the tile grid overlaid (here with auto-detect
+content enabled — the program found the actual drawing area on its own
+and skipped the blank margins). Right: one of the generated sheets — you
+can see registration marks (blue), cut lines (red dashed), sheet
+numbering, a 100 mm reference ruler, and a 50×50 mm calibration square.
 
-It automatically:
+---
 
--   detects useful drawing area
--   removes unnecessary white margins
--   optimizes page orientation
--   skips blank sheets
--   adds registration marks
--   produces print-ready tiled PDFs
+## Features
 
-------------------------------------------------------------------------
+| Feature | Description |
+|---|---|
+| **Splitting into sheets** | ISO A0–A6, Letter/Legal/Tabloid, ANSI A–E, ARCH A–E1 — 0–50 mm overlap, always 100% scale (no rescaling) |
+| **Auto-orientation (`--maximize`)** | Picks portrait/landscape for the chosen format on its own to minimize the number of sheets |
+| **Auto-detect content** | Detects the actual drawing area and skips blank page margins before splitting |
+| **Select content area manually** | When auto-detect gets it wrong — drag the corners on the preview (like in CAD) or type coordinates, `--crop-rect` in the CLI |
+| **Blank-sheet detection** | Warns about, or automatically skips, sheets that would come out essentially blank — saves paper |
+| **Registration marks** | Registration crosses, cut lines, sheet numbering (A1, B2…), a 100 mm ruler, a 50×50 mm calibration square |
+| **Print Shop mode** | A "do not scale" stamp placed in the overlap area + a print job info sheet at the start of the file |
+| **Live preview (GUI)** | The tile grid updates instantly as you change the paper size, overlap, or any option |
+| **PDF metadata** | Title/Creator/Producer set on every generated file |
+| **Polish diacritics** | Correct rendering of ą ć ę ł ń ó ś ź ż (bundled DejaVu Sans font) |
+| **Cross-platform** | Linux, Windows, macOS — CI checks all three on every push |
 
-# Highlights
+## Installation
 
-- 🎯 **Exact 100% Scale** – no unwanted scaling.
-- ✂ **Smart Auto Crop** – removes unnecessary white margins.
-- 📄 **Automatic Orientation** – minimizes the number of pages.
-- 🗑 **Skip Blank Pages** – saves paper and ink.
-- ✚ **Registration Marks & Cut Lines** – easier page assembly.
-- 📐 **Built-in Calibration Tools** – verify print accuracy in seconds.
-- 🏭 **Print Shop Mode** – PDFs ready for commercial printing.
-- 🖥 **GUI & CLI** – suitable for both casual users and automation.
-- 🌍 **Open Source (MIT)** – free forever.
-
-------------------------------------------------------------------------
-
-# Workflow
-
-``` text
-Input PDF
-    │
-    ▼
-Smart Auto Crop
-    │
-    ▼
-Orientation Optimizer
-    │
-    ▼
-Blank Page Detection
-    │
-    ▼
-Tile Generator
-    │
-    ▼
-GhostPoster PDF
-```
-
-------------------------------------------------------------------------
-
-# Typical Applications
-
--   ✈ RC aircraft plans
--   📐 CAD drawings
--   📘 Engineering documentation
--   🪚 Woodworking templates
--   ⚙ CNC templates
--   🏗 Architectural drawings
--   🖼 Posters
--   🔨 DIY projects
-
-------------------------------------------------------------------------
-
-# Installation
-
-## Linux AppImage
-
-``` bash
-chmod +x GhostPoster-x86_64.AppImage
-./GhostPoster-x86_64.AppImage
-```
-
-## Build from source
-
-``` bash
+```bash
 git clone https://github.com/nftomczain/GhostPoster.git
 cd GhostPoster
-pip install -e ".[gui]"
+pip install -e .          # CLI only
+pip install -e ".[gui]"   # CLI + GUI (PySide6)
 ```
 
-------------------------------------------------------------------------
+## Quick start
 
-# Quick Start
-
-``` bash
-ghostposter plan.pdf \
-    --paper A3 \
-    --auto-crop \
-    --maximize \
-    --skip-blank \
-    --marks \
-    --cutlines \
-    --labels \
-    --output plan_A3.pdf
+```bash
+ghostposter plan.pdf --paper A3 --overlap 15 --maximize --auto-crop --output plan_A3.pdf
 ```
 
-------------------------------------------------------------------------
+That's enough to get going: the program picks the sheet orientation on its
+own, trims blank margins, and saves print-ready A3 sheets with a 15 mm
+overlap.
 
-# Graphical Interface
+## GUI
 
-Features:
-
--   Live Preview
--   Drag & Drop
--   Export progress
--   Keyboard shortcuts
--   Accessibility support
-
-------------------------------------------------------------------------
-
-# Command Line
-
-``` bash
-ghostposter drawing.pdf --paper A4
+```bash
+ghostposter-gui
 ```
 
-------------------------------------------------------------------------
+Drop a PDF (or choose a file with the button/Enter), set the paper size
+and overlap, check the options you need, export. The preview with the
+overlaid grid updates live — including after turning on auto-detect
+content, changing its margin, or toggling blank-sheet skipping — and the
+export shows a real progress bar.
 
-# Print Shop Mode
+If auto-detect struggles with an unusual PDF (e.g. a thin frame line
+reaching the very edge of the page), the "Select content area..." button
+lets you mark it manually: drag the corners right on the preview (like in
+CAD — double-click confirms the selection), or type exact X0/Y0/X1/Y1
+coordinates in millimeters — fully keyboard-accessible. The starting
+rectangle automatically matches the detected content when possible,
+instead of the whole page, and the selection size is shown live while
+dragging. "Back to auto-detect" undoes the manual selection.
 
-Adds:
+The interface is bilingual (PL/EN, switcher in the top-right corner of the
+window). The last-used language, paper size, overlap, content-detection
+margin, and every checkbox (`--maximize`, `--auto-crop`, skipping blank
+sheets, Print Shop mode) are remembered between runs.
 
--   print instruction sheet
--   DO NOT SCALE stamp
--   PDF metadata
+A short splash screen appears on launch, and a "❓ Help" menu in the
+top-right corner links to the documentation, a quick guide, GitHub, bug
+reporting (including a real `GHOSTPOSTER_DEBUG=1` diagnostics mode), and
+an About dialog.
 
-Designed for commercial printing services.
+Designed for one-handed use — every action is also available from the
+keyboard (`Ctrl+O` opens a file, `Ctrl+E` exports) — and for screen
+readers (every control has an `accessibleName` set).
 
-------------------------------------------------------------------------
+## CLI
 
-# Debug Mode
-
-Run:
-
-``` bash
-GHOSTPOSTER_DEBUG=1 ./GhostPoster-x86_64.AppImage
+```bash
+ghostposter plan.pdf --paper A3 --overlap 15 --marks --cutlines --labels --output plan_A3.pdf
 ```
 
-GhostPoster creates:
+| Option | Description | Default |
+|---|---|---|
+| `--paper` | Target sheet format: A0–A6, Letter, Legal, Tabloid, ANSI-A–E, ARCH-A–E1 | `A4` |
+| `--overlap` | Overlap width in mm (0–50) | `10` |
+| `--page` | Source PDF page number (0-based) | `0` |
+| `--output` | Output file path | `<name>_tiled.pdf` |
+| `--maximize` | Auto-orientation — fewer sheets, always 100% scale | off |
+| `--auto-crop` | Trim to the actual drawing area before splitting | off |
+| `--crop-margin` | Margin (mm) kept around detected content with `--auto-crop`: 0/2/5/10/20 | `5` |
+| `--skip-blank` | Skip automatically detected blank sheets (no prompt) | off |
+| `--keep-blank` | Keep the full grid even if some sheets come out blank | off |
+| `--blank-threshold` | Blank-sheet detection threshold in % ink — raise it if a thin frame line keeps near-empty tiles from being recognized as blank | `0.5` |
+| `--crop-rect` | Manually defined content area `'x0,y0,x1,y1'` in mm — skips auto-detection, useful when it struggles | none (auto) |
+| `--marks` | Registration crosses on shared overlaps | off |
+| `--cutlines` | Cut lines on shared overlaps | off |
+| `--labels` | Sheet numbering + 100 mm ruler + 50×50 mm square | off |
+| `--print-shop` | Print Shop mode: "do not scale" stamp + print job info sheet | off |
 
-``` text
-ghostposter_debug.txt
+Without any blank-sheet flag: if the program detects blank sheets, it asks
+whether to skip them when run in an interactive terminal; in a script
+(e.g. CI) it just keeps them and suggests using `--skip-blank`.
+
+Run without installing: `python -m ghostposter ...`
+
+## Examples
+
+`examples/` contains synthetic test files (generated by
+`scripts/generate_examples.py`) covering different cases:
+
+| File | Case |
+|---|---|
+| `plan_A0_poster.pdf` | A single page in A0 format |
+| `plan_large_margins.pdf` | Content only in the center block — a good test for `--auto-crop` |
+| `plan_multipage.pdf` | 3 pages of different sizes — tests `--page` |
+| `plan_wide_strip.pdf` | A very wide, short plan — a good test for `--maximize` |
+
+```bash
+ghostposter examples/plan_large_margins.pdf --paper A4 --auto-crop --output out.pdf
 ```
 
-The log contains:
+## Portable Linux version (AppImage)
 
--   GhostPoster version
--   Python version
--   PyMuPDF / MuPDF versions
--   platform information
--   PDF geometry
--   export diagnostics
+One file, no installation, no `pip install`:
 
-This information is useful when reporting bugs.
+1. [GitHub Actions](https://github.com/nftomczain/GhostPoster/actions) →
+   latest successful **CI** run → **GhostPoster-x86_64-AppImage** artifact.
+2. `chmod +x GhostPoster-x86_64.AppImage`
+3. `./GhostPoster-x86_64.AppImage`
 
-------------------------------------------------------------------------
+Build it yourself:
 
-# FAQ
+```bash
+./scripts/build_appimage.sh
+```
 
-## Does GhostPoster preserve scale?
+## Windows support
+Want to help?
 
-Yes.
+I'm looking for contributors who can help build, test and package the native Windows version.
 
-The original drawing scale is preserved.
+If you can help with any of the following, I'd really appreciate it:
 
-## Does GhostPoster modify the original PDF?
+- Build the project on Windows 10/11 using PyInstaller
+- Test the generated executable
+- Report Windows-specific issues
+- Improve the Windows packaging process
+- Help automate Windows releases through GitHub Actions
 
-No.
+Repository: https://github.com/nftomczain/GhostPoster
 
-A new PDF is always created.
+Thank you for any contribution!
 
-## Does GhostPoster require Internet?
+To build it yourself on Windows:
 
-No.
+```powershell
+.\scripts\build_windows.ps1
+```
 
-Everything runs locally.
+The result lands in `dist\GhostPoster\` — the whole folder is portable,
+you can zip it up and send it to someone with no installer needed.
 
-## Can it print RC aircraft plans?
+## CI
 
-Yes.
+GitHub Actions (`.github/workflows/ci.yml`) runs on every push and PR to
+`main`: `ruff check`, `black --check`, `pytest` (Linux/Windows/macOS ×
+Python 3.10–3.12 matrix), a package build (`python -m build`), a portable
+`GhostPoster.exe` for Windows, and a portable `GhostPoster-x86_64.AppImage`
+for Linux (both via PyInstaller).
 
-GhostPoster was originally created for full-size RC aircraft plans.
+## Release history
 
-------------------------------------------------------------------------
+See GitHub Releases for the full changelog.
 
-# Roadmap
+### v1.0.0
 
-## v1.0.x
+- First stable release
+- GUI and CLI
+- Auto-detect content
+- Manual content selection
+- Live preview
+- AppImage
 
--   Stable GUI
--   Stable CLI
--   Auto Crop
--   Auto Orientation
--   Skip Blank Pages
--   Print Shop Mode
+## Future ideas
 
-## v1.1
+Not blocking 1.0.0, but worth considering:
 
--   Smooth zoom
--   Mouse panning
--   Export selected pages
+- a macOS package (`.app`/DMG)
+- Flatpak (alongside the existing AppImage)
+- a configurable sheet-numbering style (letter=row instead of letter=column)
 
-## v1.2
+### macOS support
 
--   User paper sizes
--   Printer profiles
--   Custom crop margins
+GhostPoster is designed to be cross-platform, but I currently don't have access
+to macOS hardware for building and testing native releases.
 
-## v1.3
+If you'd like to help with packaging or testing on macOS, contributions are
+very welcome.
 
--   SVG export
--   DXF export
+## License
 
-------------------------------------------------------------------------
-
-# Contributing
-
-Bug reports and pull requests are welcome.
-
-Please include:
-
--   GhostPoster version
--   operating system
--   sample PDF
--   ghostposter_debug.txt (if available)
-
-------------------------------------------------------------------------
-
-# License
-
-MIT License.
-
-------------------------------------------------------------------------
-
-<p align="center">
-
-Made with ❤️ in Poland
-
-for the RC, Maker and Open Source communities.
-
-</p>
+MIT — see [LICENSE](LICENSE).

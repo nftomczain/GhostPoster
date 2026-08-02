@@ -24,6 +24,7 @@ class TileJobConfig:
     keep_blank: bool = False  # wymuś zachowanie wszystkich arkuszy bez pytania
     auto_crop: bool = False  # przytnij do rzeczywistego obszaru rysunku przed podziałem
     crop_margin_mm: float = 5.0  # margines wokół wykrytej treści przy auto_crop
+    blank_threshold_pct: float = 0.5  # % atramentu ponizej ktorego arkusz uznajemy za pusty
 
     def __post_init__(self) -> None:
         if not (0 <= self.overlap_mm <= 50):
@@ -34,3 +35,5 @@ class TileJobConfig:
             raise ValueError("--skip-blank i --keep-blank wykluczają się nawzajem.")
         if self.crop_margin_mm < 0:
             raise ValueError("Margines Auto Crop nie może być ujemny.")
+        if not (0 <= self.blank_threshold_pct <= 100):
+            raise ValueError("Próg pustych arkuszy musi być w zakresie 0-100%.")

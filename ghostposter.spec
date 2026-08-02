@@ -18,12 +18,13 @@ block_cipher = None
 # Czcionki DejaVu (polskie znaki w generowanych PDF-ach) muszą pojechać
 # jako dane, bo są wczytywane w runtime przez ścieżkę względem pakietu.
 font_datas = collect_data_files("ghostposter", includes=["fonts/*.ttf", "fonts/LICENSE.txt"])
+asset_datas = collect_data_files("ghostposter", includes=["assets/*.png"])
 
 a = Analysis(
     ["pyinstaller_entry.py"],
     pathex=[],
     binaries=[],
-    datas=font_datas,
+    datas=font_datas + asset_datas,
     hiddenimports=["fitz", "PIL", "PIL._tkinter_finder"],
     hookspath=[],
     hooksconfig={},

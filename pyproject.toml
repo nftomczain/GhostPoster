@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ghostposter"
-version = "1.0.1rc1"
+version = "1.1.2"
 description = "Split large PDF plans across smaller paper sizes (A4/A3/A2...) for printing posters on regular printers."
 readme = "README.md"
 license = { text = "MIT" }
@@ -35,7 +35,7 @@ Homepage = "https://github.com/nftomczain/GhostPoster"
 include = ["ghostposter*"]
 
 [tool.setuptools.package-data]
-ghostposter = ["fonts/*.ttf", "fonts/LICENSE.txt"]
+ghostposter = ["fonts/*.ttf", "fonts/LICENSE.txt", "assets/*.png"]
 
 [tool.black]
 line-length = 100

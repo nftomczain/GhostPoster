@@ -2,93 +2,116 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
   pull_request:
-    branches: [main]
+    branches: ["main"]
 
 jobs:
-  test:
-    name: Lint + Test (Python ${{ matrix.python-version }}, ${{ matrix.os }})
+  lint-and-test:
+    name: Lint + testy (Python ${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-          - macos-latest
-        python-version:
-          - "3.10"
-          - "3.11"
-          - "3.12"
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      #
-      # Qt runtime libraries (Linux only)
-      #
-      - name: Install Qt runtime libraries
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libegl1 \
-            libgl1 \
-            libxkbcommon-x11-0 \
-            libxcb-cursor0 \
-            libopengl0
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[gui,dev]"
-
-      - name: Ruff
-        run: |
-          ruff check .
-
-      - name: Black
-        run: |
-          black --check .
-
-      - name: Pytest
-        env:
-          QT_QPA_PLATFORM: offscreen
-        run: |
-          pytest -q
-
-  build:
-    name: Build package (sdist + wheel)
-    runs-on: ubuntu-latest
-
-    needs: test
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.10", "3.11", "3.12"]
 
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Ustaw Pythona
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Zainstaluj zaleznosci
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[gui,dev]"
+
+      - name: ruff (lint)
+        run: ruff check .
+
+      - name: black (format check)
+        run: black --check .
+
+      - name: pytest
+        run: pytest -q
+
+  build:
+    name: Budowa paczki (sdist + wheel)
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ustaw Pythona
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install build dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install build
+      - name: Zainstaluj build
+        run: python -m pip install --upgrade pip build
 
-      - name: Build
-        run: |
-          python -m build
+      - name: Zbuduj paczke
+        run: python -m build
 
-      - name: Upload artifacts
+      - name: Wgraj artefakty
         uses: actions/upload-artifact@v4
         with:
           name: ghostposter-dist
           path: dist/*
+
+  build-windows-portable:
+    name: Budowa przenośnej wersji Windows (.exe)
+    runs-on: windows-latest
+    needs: lint-and-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ustaw Pythona
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Zainstaluj zaleznosci
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[gui,build]"
+
+      - name: Zbuduj GhostPoster.exe (PyInstaller)
+        run: pyinstaller ghostposter.spec --noconfirm
+
+      - name: Spakuj do zip
+        run: Compress-Archive -Path dist/GhostPoster -DestinationPath GhostPoster-windows-portable.zip
+
+      - name: Wgraj artefakt
+        uses: actions/upload-artifact@v4
+        with:
+          name: GhostPoster-windows-portable
+          path: GhostPoster-windows-portable.zip
+
+  build-linux-appimage:
+    name: Budowa AppImage (Linux)
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ustaw Pythona
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Zainstaluj zaleznosci systemowe (Qt headless)
+        run: sudo apt-get update && sudo apt-get install -y libegl1 libxkbcommon0
+
+      - name: Zbuduj AppImage
+        run: ./scripts/build_appimage.sh
+
+      - name: Wgraj artefakt
+        uses: actions/upload-artifact@v4
+        with:
+          name: GhostPoster-x86_64-AppImage
+          path: GhostPoster-x86_64.AppImage
