@@ -235,3 +235,11 @@ very welcome.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+## Support
+
+GhostPoster is free and open source.
+
+If it has been useful to you and you'd like to support future development, you can do so on Liberapay.
+
+[![Support on Liberapay](https://img.shields.io/badge/Liberapay-Support-F6C915?logo=liberapay&logoColor=black)](https://liberapay.com/nftomczain/)
+
