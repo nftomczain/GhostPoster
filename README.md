@@ -235,6 +235,24 @@ very welcome.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+---
+
+## Availability
+
+**A mirror that won't be forgotten.**
+
+### Source Code
+https://github.com/nftomczain/GhostPoster
+
+### IPFS (immutable release)
+https://ipfs.io/ipfs/QmeXdBgdic86xgV3mQwa5ZjFZDuCBEZFk6KDTrUBZHXLEB
+
+### IPNS (always latest)
+https://ipfs.io/ipns/k51qzi5uqu5di41zx1zd5tilwa74n3ebwwmqug800haw5qa4a6jrtnmr3k99c0
+
+---
+
 ## Support
 
 GhostPoster is free and open source.
