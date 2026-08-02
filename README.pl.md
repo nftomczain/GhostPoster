@@ -226,6 +226,14 @@ Pełna historia zmian znajduje się w GitHub Releases.
 ### Wsparcie dla macOS
 
 GhostPoster jest projektem wieloplatformowym, jednak obecnie nie mam możliwości budowania i testowania natywnych wydań dla macOS.
+## Wsparcie
+
+GhostPoster jest darmowym i otwartym oprogramowaniem.
+
+Jeśli projekt okazał się dla Ciebie przydatny, możesz wesprzeć jego dalszy rozwój na Liberapay.
+
+[![Liberapay](https://img.shields.io/badge/Liberapay-Wesprzyj-F6C915?logo=liberapay&logoColor=black)](https://liberapay.com/nftomczain/)
+
 
 Jeśli masz komputer Mac i chciałbyś pomóc w testowaniu lub przygotowaniu wersji dla macOS, zapraszam do współpracy.
 
