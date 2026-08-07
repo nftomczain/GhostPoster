@@ -20,7 +20,7 @@
   <a href="https://github.com/nftomczain/GhostPoster/actions"><img alt="CI" src="https://img.shields.io/badge/CI-GitHub%20Actions-blue"></a>
   <img alt="license" src="https://img.shields.io/badge/license-MIT-green">
   <img alt="version" src="https://img.shields.io/github/v/release/nftomczain/GhostPoster?display_name=tag">
- <img alt="Platform" src="https://img.shields.io/badge/Platform-Linux AppImage-green">
+ <img alt="Platform" src="https://img.shields.io/badge/Platform-Linux AppImage | Windows Portable-green">
 </p>
 
 ---
@@ -170,31 +170,23 @@ Zbudować samodzielnie:
 ./scripts/build_appimage.sh
 ```
 
-## Wsparcie dla Windows
+## Obsługa systemu Windows
 
-### Chcesz pomóc?
+Przenośne wersje GhostPoster dla systemu Windows są automatycznie tworzone przez GitHub Actions po każdym pomyślnym przebiegu procesu CI.
 
-Szukam osób, które mogłyby pomóc w budowaniu, testowaniu i dopracowaniu natywnej wersji GhostPostera dla systemu Windows.
-
-Szczególnie przyda się pomoc w:
-
-- budowaniu projektu na Windows 10/11 przy użyciu PyInstallera,
-- testowaniu wygenerowanego programu,
-- zgłaszaniu problemów specyficznych dla Windows,
-- usprawnianiu procesu tworzenia pakietów,
-- automatyzacji wydań Windows w GitHub Actions.
-
-Repozytorium: https://github.com/nftomczain/GhostPoster
-
-Każda pomoc będzie bardzo mile widziana!
-
-Jeśli chcesz zbudować GhostPostera samodzielnie w systemie Windows:
+Najnowszą wersję przenośną można pobrać z zakładki **Actions** w repozytorium lub zbudować lokalnie:
 
 ```powershell
 .\scripts\build_windows.ps1
 ```
 
-Gotowa przenośna wersja zostanie utworzona w katalogu `dist\GhostPoster\`. Cały folder można spakować i przekazać innej osobie — instalacja nie jest wymagana.
+Pliki wynikowe zostaną zapisane w katalogu:
+
+```text
+dist\GhostPoster\
+```
+
+Cały katalog jest przenośny i nie wymaga instalatora. Wystarczy skopiować lub spakować folder, a następnie uruchomić `GhostPoster.exe` na dowolnym komputerze z systemem Windows 10 lub Windows 11.
 
 ## CI
 
