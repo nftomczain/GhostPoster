@@ -142,3 +142,36 @@ jobs:
         with:
           name: GhostPoster-x86_64-AppImage
           path: GhostPoster-x86_64.AppImage
+          
+  build-macos:
+    name: Budowa macOS (.app)
+    runs-on: macos-latest
+    needs: lint-and-test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[gui,build]"
+
+      - name: Build app
+        run: |
+          pyinstaller ghostposter.spec --noconfirm
+
+      - name: Zip application
+        run: |
+          cd dist
+          ditto -c -k --sequesterRsrc --keepParent GhostPoster.app GhostPoster-macOS.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GhostPoster-macOS-portable
+          path: dist/GhostPoster-macOS.zip
