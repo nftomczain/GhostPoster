@@ -10,6 +10,7 @@ jobs:
   lint-and-test:
     name: Lint + testy (Python ${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -23,7 +24,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "pip"
+          cache: pip
 
       - name: Install Qt runtime (Ubuntu)
         if: runner.os == 'Linux'
@@ -40,18 +41,18 @@ jobs:
             libxcb-render-util0 \
             libxcb-xinerama0
 
-      - name: Zainstaluj zaleznosci
+      - name: Zainstaluj zależności
         run: |
           python -m pip install --upgrade pip
           pip install -e ".[gui,dev]"
 
-      - name: ruff (lint)
+      - name: Ruff
         run: ruff check .
 
-      - name: black (format check)
+      - name: Black
         run: black --check .
 
-      - name: pytest
+      - name: Pytest
         run: pytest -q
 
   build:
@@ -69,9 +70,10 @@ jobs:
 
       - name: Zainstaluj build
         run: |
-          python -m pip install --upgrade pip build
+          python -m pip install --upgrade pip
+          python -m pip install build
 
-      - name: Zbuduj paczke
+      - name: Zbuduj paczkę
         run: python -m build
 
       - name: Wgraj artefakty
@@ -93,15 +95,16 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Zainstaluj zaleznosci
+      - name: Zainstaluj zależności
         run: |
           python -m pip install --upgrade pip
           pip install -e ".[gui,build]"
 
-      - name: Zbuduj GhostPoster.exe (PyInstaller)
+      - name: Zbuduj GhostPoster.exe
         run: pyinstaller ghostposter.spec --noconfirm
 
-      - name: Spakuj do zip
+      - name: Spakuj do ZIP
+        shell: pwsh
         run: Compress-Archive -Path dist/GhostPoster -DestinationPath GhostPoster-windows-portable.zip
 
       - name: Wgraj artefakt
@@ -123,10 +126,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Zainstaluj zaleznosci systemowe (Qt headless)
+      - name: Zainstaluj zależności systemowe
         run: |
           sudo apt-get update
-          sudo apt-get install -y libegl1 libxkbcommon0
+          sudo apt-get install -y \
+            libegl1 \
+            libgl1 \
+            libxkbcommon0
 
       - name: Zbuduj AppImage
         run: ./scripts/build_appimage.sh
