@@ -164,13 +164,6 @@ jobs:
       - name: Build app
         run: |
           pyinstaller ghostposter.spec --noconfirm
-
-      - name: Show dist directory
-        run: |
-        pwd
-        ls -la
-        ls -la dist || true
-        find dist -maxdepth 2
       
       - name: Zip application
         run: |
