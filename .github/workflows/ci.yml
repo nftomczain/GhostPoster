@@ -165,6 +165,13 @@ jobs:
         run: |
           pyinstaller ghostposter.spec --noconfirm
 
+      - name: Show dist directory
+        run: |
+        pwd
+        ls -la
+        ls -la dist || true
+        find dist -maxdepth 2
+      
       - name: Zip application
         run: |
           cd dist
@@ -173,5 +180,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: GhostPoster-macOS-portable
+          name: GhostPoster-macOS
           path: dist/GhostPoster-macOS.zip

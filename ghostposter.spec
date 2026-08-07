@@ -59,3 +59,12 @@ coll = COLLECT(
     upx_exclude=[],
     name="GhostPoster",
 )
+import sys
+
+if sys.platform == "darwin":
+    app = BUNDLE(
+        coll,
+        name="GhostPoster.app",
+        icon="docs/logo.icns",
+        bundle_identifier="io.github.nftomczain.GhostPoster",
+    )
