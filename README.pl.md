@@ -20,7 +20,7 @@
   <a href="https://github.com/nftomczain/GhostPoster/actions"><img alt="CI" src="https://img.shields.io/badge/CI-GitHub%20Actions-blue"></a>
   <img alt="license" src="https://img.shields.io/badge/license-MIT-green">
   <img alt="version" src="https://img.shields.io/github/v/release/nftomczain/GhostPoster?display_name=tag">
- <img alt="Platform" src="https://img.shields.io/badge/Platform-Linux AppImage | Windows Portable-green">
+ </br><img alt="Platform" src="https://img.shields.io/badge/Platform-Linux AppImage | Windows Portable | macOS Portable -green">
 </p>
 
 ---
@@ -170,7 +170,7 @@ Zbudować samodzielnie:
 ./scripts/build_appimage.sh
 ```
 
-## Obsługa systemu Windows
+## Przenośna wersja dla systemu Windows (.exe)
 
 Przenośne wersje GhostPoster dla systemu Windows są automatycznie tworzone przez GitHub Actions po każdym pomyślnym przebiegu procesu CI.
 
@@ -188,13 +188,21 @@ dist\GhostPoster\
 
 Cały katalog jest przenośny i nie wymaga instalatora. Wystarczy skopiować lub spakować folder, a następnie uruchomić `GhostPoster.exe` na dowolnym komputerze z systemem Windows 10 lub Windows 11.
 
+## Przenośna wersja dla systemu macOS (.app)
+
+GhostPoster jest projektem wieloplatformowym, a natywna przenośna wersja dla macOS jest obecnie automatycznie tworzona przez GitHub Actions.
+
+Build dla macOS tworzy samodzielną paczkę `GhostPoster.app`, którą można skopiować i uruchomić bez tradycyjnego instalatora.
+
+Aplikację można również zbudować lokalnie przy użyciu PyInstallera i tej samej konfiguracji projektu.
+
+W przyszłości można dodać paczkę dystrybucyjną `.DMG`, a także podpisywanie kodu i notaryzację macOS, aby zapewnić bardziej dopracowaną dystrybucję dla użytkowników końcowych.
+
+Jeśli masz dostęp do komputera Mac i chcesz pomóc w testowaniu natywnej wersji, sprawdzaniu kompatybilności lub rozwijaniu procesu pakowania dla macOS, każda pomoc jest mile widziana.
+
 ## CI
 
-GitHub Actions (`.github/workflows/ci.yml`) uruchamia na każdym pushu i PR
-do `main`: `ruff check`, `black --check`, `pytest` (macierz Linux/Windows/macOS
-× Python 3.10–3.12), budowę paczki (`python -m build`), przenośny
-`GhostPoster.exe` na Windows i przenośny `GhostPoster-x86_64.AppImage` na
-Linuksie (oba jako PyInstaller).
+GitHub Actions (`.github/workflows/ci.yml`) uruchamia się przy każdym pushu oraz PR do `main`: `ruff check`, `black --check`, `pytest` (macOS/Linux/Windows × Python 3.10–3.12), budowę paczki (`python -m build`), przenośny `GhostPoster.exe` dla Windows, przenośny `GhostPoster-x86_64.AppImage` dla Linuxa oraz przenośny `GhostPoster.app` dla macOS. Kompilacje aplikacji dla Windows, Linuxa i macOS wykorzystują PyInstallera.
 
 ## Historia wydań
 
@@ -203,28 +211,49 @@ Pełna historia zmian znajduje się w GitHub Releases.
 ### v1.0.0
 
 - Pierwsze stabilne wydanie
+- GUI i CLI
 - Automatyczne wykrywanie obszaru treści
 - Ręczne wskazywanie obszaru treści
-- Graficzny interfejs użytkownika (GUI)
-- Interfejs wiersza poleceń (CLI)
+- Podgląd na żywo
 - Przenośna wersja AppImage
+- Przenośna wersja Windows (.exe)
+- Przenośna wersja macOS (.app)
 
-## Pomysły na kolejne wersje:
+## Pomysły na kolejne wersje
 
-- paczka macOS (`.app`/DMG)
+Nie są wymagane do wydania 1.0.0, ale warto je rozważyć:
+
 - Flatpak (obok istniejącego AppImage)
-- konfigurowalny styl numeracji arkuszy (litera=wiersz zamiast litera=kolumna)
-
-### Wsparcie dla macOS
-
-GhostPoster jest projektem wieloplatformowym, jednak obecnie nie mam możliwości budowania i testowania natywnych wydań dla macOS.
-## Wsparcie
-
-Jeśli masz komputer Mac i chciałbyś pomóc w testowaniu lub przygotowaniu wersji dla macOS, zapraszam do współpracy.
+- konfigurowalny styl numeracji arkuszy (litera = wiersz zamiast litera = kolumna)
 
 ## Licencja
 
 MIT — zobacz [LICENSE](LICENSE).
+
+GhostPoster jest darmowym i otwartym oprogramowaniem.
+
+Jeśli projekt okazał się dla Ciebie przydatny, możesz wesprzeć jego dalszy rozwój na Liberapay.
+
+[![Liberapay](https://img.shields.io/badge/Liberapay-Wesprzyj-F6C915?logo=liberapay&logoColor=black)](https://liberapay.com/nftomczain/)
+
+---
+
+## Dostępność
+
+**A mirror that won't be forgotten.**
+
+### Kod źródłowy
+https://github.com/nftomczain/GhostPoster
+
+### IPFS (niezmienna wersja wydania)
+https://ipfs.io/ipfs/QmeXdBgdic86xgV3mQwa5ZjFZDuCBEZFk6KDTrUBZHXLEB
+
+### IPNS (zawsze najnowsza wersja)
+https://ipfs.io/ipns/k51qzi5uqu5di41zx1zd5tilwa74n3ebwwmqug800haw5qa4a6jrtnmr3k99c0
+
+---
+
+## Wsparcie
 
 GhostPoster jest darmowym i otwartym oprogramowaniem.
 
